@@ -4,8 +4,8 @@ module KinesisToKafka
     TOPIC = ENV.fetch('KAFKA_TOPIC', 'test')
     TOPIC_PARTITIONS = ENV.fetch('KAFKA_TOPIC_PARTITIONS', 100).to_i
     TOPIC_REPLICATION_FACTOR = ENV.fetch('KAFKA_TOPIC_REPLICATION_FACTOR', 2).to_i
-    BROKER_URLS = ENV['KAFKA_BROKER_URLS'].yield_self { |v| v.split(/\s*,\s*/) unless v.empty? }
-    AWS_CLUSTER_NAME = ENV['KAFKA_AWS_CLUSTER_NAME'].yield_self { |v| v unless v.empty? }
+    BROKER_URLS = ENV['KAFKA_BROKER_URLS'].yield_self { |v| v.split(/\s*,\s*/) if v && !v.empty? }
+    AWS_CLUSTER_NAME = ENV['KAFKA_AWS_CLUSTER_NAME'].yield_self { |v| v if v && !v.empty? }
 
     if [AWS_CLUSTER_NAME, BROKER_URLS].compact.length != 1
       raise 'One of KAFKA_AWS_CLUSTER_NAME or KAFKA_BROKER_URLS must be provided'
