@@ -17,5 +17,6 @@ RUN bundle config set --local without 'development:test'
 RUN bundle install --jobs=4
 
 COPY . /app
+RUN bundle exec rake kinesis_to_kafka:download_jars
 
 CMD bash -c "source bin/set_java_home; bundle exec rake kinesis_to_kafka:run"
