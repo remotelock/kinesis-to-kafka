@@ -1,8 +1,7 @@
-require './boot'
 require 'open-uri'
 
-STREAM_EXECUTABLE_DIR = KinesisToKafka.root.join('bin')
-JAR_DIR = KinesisToKafka.root.join('vendor', 'jars')
+ROOT_DIR = Pathname.new(File.expand_path '..', __FILE__)
+JAR_DIR = ROOT_DIR.join('vendor', 'jars')
 JAVA_HOME = ENV.fetch('JAVA_HOME') do
   raise 'JAVA_HOME environment variable not set.'
 end
@@ -103,12 +102,15 @@ namespace :kinesis_to_kafka do
 
   desc 'Run consumer that reads from Kinesis and publishes to Kafka'
   task run: %i[download_jars] do
+    require './boot'
+
     properties_file = KinesisToKafka::KinesisProperties.generate_file
+    stream_executable_dir = KinesisToKafka.root.join('bin')
 
     log_configuration = ENV['AWS_KINESIS_LOG_CONFIGURATION']
     classpath = FileList["#{JAR_DIR}/*.jar"].join(':')
-    classpath += ":#{STREAM_EXECUTABLE_DIR}"
-    ENV['PATH'] = "#{ENV['PATH']}:#{STREAM_EXECUTABLE_DIR}"
+    classpath += ":#{stream_executable_dir}"
+    ENV['PATH'] = "#{ENV['PATH']}:#{stream_executable_dir}"
 
     command = [
       "#{JAVA_HOME}/bin/java",
