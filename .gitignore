@@ -1,3 +1,4 @@
+# General
 /tmp/
 *.log
 
@@ -7,3 +8,6 @@
 ## Environment normalization:
 /.bundle/
 /vendor/
+
+# App specific ignores
+config/kinesis_consumer.properties
