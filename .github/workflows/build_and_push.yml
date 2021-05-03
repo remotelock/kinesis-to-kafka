@@ -1,0 +1,18 @@
+name: Docker Build and Push
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  push_to_github_registry:
+    name: Push Docker image to GHCR
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - name: Hello
+        run: echo 'Hello'
